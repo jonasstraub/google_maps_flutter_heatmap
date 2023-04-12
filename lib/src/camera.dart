@@ -15,13 +15,10 @@ class CameraPosition {
   /// null.
   const CameraPosition({
     this.bearing = 0.0,
-    @required this.target,
+    required this.target,
     this.tilt = 0.0,
     this.zoom = 0.0,
-  })  : assert(bearing != null),
-        assert(target != null),
-        assert(tilt != null),
-        assert(zoom != null);
+  });
 
   /// The camera's bearing in degrees, measured clockwise from north.
   ///
@@ -69,7 +66,7 @@ class CameraPosition {
   /// Deserializes [CameraPosition] from a map.
   ///
   /// Mainly for internal use.
-  static CameraPosition fromMap(dynamic json) {
+  static CameraPosition? fromMap(dynamic json) {
     if (json == null) {
       return null;
     }
@@ -93,7 +90,7 @@ class CameraPosition {
   }
 
   @override
-  int get hashCode => hashValues(bearing, target, tilt, zoom);
+  int get hashCode => Object.hash(bearing, target, tilt, zoom);
 
   @override
   String toString() =>
@@ -153,7 +150,7 @@ class CameraUpdate {
   /// Returns a camera update that modifies the camera zoom level by the
   /// specified amount. The optional [focus] is a screen point whose underlying
   /// geographical location should be invariant, if possible, by the movement.
-  static CameraUpdate zoomBy(double amount, [Offset focus]) {
+  static CameraUpdate zoomBy(double amount, [Offset? focus]) {
     if (focus == null) {
       return CameraUpdate._(<dynamic>['zoomBy', amount]);
     } else {

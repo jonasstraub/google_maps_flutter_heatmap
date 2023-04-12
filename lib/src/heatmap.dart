@@ -12,7 +12,7 @@ class HeatmapId {
   /// Creates an immutable object representing a [HeatmapId] among [GoogleMap] heatmaps.
   ///
   /// An [AssertionError] will be thrown if [value] is null.
-  HeatmapId(this.value) : assert(value != null);
+  HeatmapId(this.value);
 
   /// value of the [HeatmapId].
   final String value;
@@ -21,7 +21,7 @@ class HeatmapId {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final HeatmapId typedOther = other;
+    final HeatmapId typedOther = other as HeatmapId;
     return value == typedOther.value;
   }
 
@@ -39,7 +39,7 @@ class HeatmapId {
 class WeightedLatLng {
   /// Creates an immutable object representing a [WeightedLatLng].
   WeightedLatLng({
-    @required this.point,
+    required this.point,
     this.intensity = 1,
   });
 
@@ -49,20 +49,16 @@ class WeightedLatLng {
   /// The intensity of the [WeightedLatLng].
   final int intensity;
 
-  dynamic _toJson() {
-    return <dynamic>[point._toJson(), intensity];
-  }
-
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final WeightedLatLng typedOther = other;
+    final WeightedLatLng typedOther = other as WeightedLatLng;
     return point == typedOther.point && intensity == typedOther.intensity;
   }
 
   @override
-  int get hashCode => hashValues(point, intensity);
+  int get hashCode => Object.hash(point, intensity);
 
   @override
   String toString() {
@@ -75,8 +71,8 @@ class WeightedLatLng {
 class HeatmapGradient {
   /// Creates an immutable object representing a [HeatmapGradient]
   HeatmapGradient({
-    @required this.colors,
-    @required this.startPoints,
+    required this.colors,
+    required this.startPoints,
     this.colorMapSize = 256,
   });
 
@@ -101,14 +97,14 @@ class HeatmapGradient {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final HeatmapGradient typedOther = other;
+    final HeatmapGradient typedOther = other as HeatmapGradient;
     return listEquals(colors, typedOther.colors) &&
         listEquals(startPoints, typedOther.startPoints) &&
         colorMapSize == typedOther.colorMapSize;
   }
 
   @override
-  int get hashCode => hashValues(colors, startPoints, colorMapSize);
+  int get hashCode => Object.hash(colors, startPoints, colorMapSize);
 
   @override
   String toString() {
@@ -121,7 +117,7 @@ class HeatmapGradient {
 class Heatmap {
   /// Creates an immutable object representing a heatmap on the map.
   const Heatmap({
-    @required this.heatmapId,
+    required this.heatmapId,
     this.points = const <WeightedLatLng>[],
     this.gradient,
     this.opacity = 0.7,
@@ -139,7 +135,7 @@ class Heatmap {
   final List<WeightedLatLng> points;
 
   /// The gradient of the heatmap points.
-  final HeatmapGradient gradient;
+  final HeatmapGradient? gradient;
 
   /// The opacity of the heatmap points.
   final double opacity;
@@ -166,14 +162,14 @@ class Heatmap {
   /// Creates a new [Heatmap] object whose values are the same as this instance,
   /// unless overwritten by the specified parameters.
   Heatmap copyWith({
-    List<WeightedLatLng> pointsParam,
-    HeatmapGradient gradientParam,
-    double opacityParam,
-    int radiusParam,
-    bool fadeInParam,
-    double transparencyParam,
-    bool visibleParam,
-    int zIndexParam,
+    List<WeightedLatLng>? pointsParam,
+    HeatmapGradient? gradientParam,
+    double? opacityParam,
+    int? radiusParam,
+    bool? fadeInParam,
+    double? transparencyParam,
+    bool? visibleParam,
+    int? zIndexParam,
   }) {
     return Heatmap(
       heatmapId: heatmapId,
@@ -214,11 +210,7 @@ class Heatmap {
     addIfPresent('zIndex', zIndex);
 
     if (gradient != null) {
-      json['gradient'] = gradient._toJson();
-    }
-
-    if (points != null) {
-      json['points'] = _pointsToJson();
+      json['gradient'] = gradient!._toJson();
     }
 
     return json;
@@ -228,7 +220,7 @@ class Heatmap {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final Heatmap typedOther = other;
+    final Heatmap typedOther = other as Heatmap;
     return heatmapId == typedOther.heatmapId &&
         listEquals(points, typedOther.points) &&
         gradient == typedOther.gradient &&
@@ -242,17 +234,9 @@ class Heatmap {
 
   @override
   int get hashCode => heatmapId.hashCode;
-
-  dynamic _pointsToJson() {
-    final List<dynamic> result = <dynamic>[];
-    for (final WeightedLatLng point in points) {
-      result.add(point._toJson());
-    }
-    return result;
-  }
 }
 
-Map<HeatmapId, Heatmap> _keyByHeatmapId(Iterable<Heatmap> heatmaps) {
+Map<HeatmapId, Heatmap> _keyByHeatmapId(Iterable<Heatmap>? heatmaps) {
   if (heatmaps == null) {
     return <HeatmapId, Heatmap>{};
   }
@@ -260,11 +244,11 @@ Map<HeatmapId, Heatmap> _keyByHeatmapId(Iterable<Heatmap> heatmaps) {
       MapEntry<HeatmapId, Heatmap>(heatmap.heatmapId, heatmap.clone())));
 }
 
-List<Map<String, dynamic>> _serializeHeatmapSet(Set<Heatmap> heatmaps) {
+List<Map<String, dynamic>>? _serializeHeatmapSet(Set<Heatmap?>? heatmaps) {
   if (heatmaps == null) {
     return null;
   }
   return heatmaps
-      .map<Map<String, dynamic>>((Heatmap p) => p._toJson())
+      .map<Map<String, dynamic>>((Heatmap? p) => p!._toJson())
       .toList();
 }

@@ -29,6 +29,4 @@ class PatternItem {
   }
 
   final dynamic _json;
-
-  dynamic _toJson() => _json;
 }

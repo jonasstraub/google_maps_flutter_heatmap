@@ -9,11 +9,7 @@ part of google_maps_flutter_heatmap;
 /// Used in [GoogleMapController] when the map is updated.
 class _HeatmapUpdates {
   /// Computes [_HeatmapUpdates] given previous and current [Heatmap]s.
-  _HeatmapUpdates.from(Set<Heatmap> previous, Set<Heatmap> current) {
-    if (previous == null) {
-      previous = Set<Heatmap>.identity();
-    }
-
+  _HeatmapUpdates.from(Set<Heatmap> previous, Set<Heatmap>? current) {
     if (current == null) {
       current = Set<Heatmap>.identity();
     }
@@ -24,26 +20,26 @@ class _HeatmapUpdates {
     final Set<HeatmapId> prevHeatmapIds = previousHeatmaps.keys.toSet();
     final Set<HeatmapId> currentHeatmapIds = currentHeatmaps.keys.toSet();
 
-    Heatmap idToCurrentHeatmap(HeatmapId id) {
+    Heatmap? idToCurrentHeatmap(HeatmapId id) {
       return currentHeatmaps[id];
     }
 
     final Set<HeatmapId> _heatmapIdsToRemove =
         prevHeatmapIds.difference(currentHeatmapIds);
 
-    final Set<Heatmap> _heatmapsToAdd = currentHeatmapIds
+    final Set<Heatmap?> _heatmapsToAdd = currentHeatmapIds
         .difference(prevHeatmapIds)
         .map(idToCurrentHeatmap)
         .toSet();
 
     /// Returns `true` if [current] is not equals to previous one with the
     /// same id.
-    bool hasChanged(Heatmap current) {
-      final Heatmap previous = previousHeatmaps[current.heatmapId];
+    bool hasChanged(Heatmap? current) {
+      final Heatmap? previous = previousHeatmaps[current!.heatmapId];
       return current != previous;
     }
 
-    final Set<Heatmap> _heatmapsToChange = currentHeatmapIds
+    final Set<Heatmap?> _heatmapsToChange = currentHeatmapIds
         .intersection(prevHeatmapIds)
         .map(idToCurrentHeatmap)
         .where(hasChanged)
@@ -54,9 +50,9 @@ class _HeatmapUpdates {
     heatmapsToChange = _heatmapsToChange;
   }
 
-  Set<Heatmap> heatmapsToAdd;
-  Set<HeatmapId> heatmapIdsToRemove;
-  Set<Heatmap> heatmapsToChange;
+  Set<Heatmap?>? heatmapsToAdd;
+  Set<HeatmapId>? heatmapIdsToRemove;
+  Set<Heatmap?>? heatmapsToChange;
 
   Map<String, dynamic> _toMap() {
     final Map<String, dynamic> updateMap = <String, dynamic>{};
@@ -70,7 +66,7 @@ class _HeatmapUpdates {
     addIfNonNull('heatmapsToAdd', _serializeHeatmapSet(heatmapsToAdd));
     addIfNonNull('heatmapsToChange', _serializeHeatmapSet(heatmapsToChange));
     addIfNonNull('heatmapIdsToRemove',
-        heatmapIdsToRemove.map<dynamic>((HeatmapId m) => m.value).toList());
+        heatmapIdsToRemove!.map<dynamic>((HeatmapId m) => m.value).toList());
 
     return updateMap;
   }
@@ -79,7 +75,7 @@ class _HeatmapUpdates {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final _HeatmapUpdates typedOther = other;
+    final _HeatmapUpdates typedOther = other as _HeatmapUpdates;
     return setEquals(heatmapsToAdd, typedOther.heatmapsToAdd) &&
         setEquals(heatmapIdsToRemove, typedOther.heatmapIdsToRemove) &&
         setEquals(heatmapsToChange, typedOther.heatmapsToChange);
@@ -87,7 +83,7 @@ class _HeatmapUpdates {
 
   @override
   int get hashCode =>
-      hashValues(heatmapsToAdd, heatmapIdsToRemove, heatmapsToChange);
+      Object.hash(heatmapsToAdd, heatmapIdsToRemove, heatmapsToChange);
 
   @override
   String toString() {

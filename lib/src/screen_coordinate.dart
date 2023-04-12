@@ -13,18 +13,18 @@ part of google_maps_flutter_heatmap;
 class ScreenCoordinate {
   /// Creates an immutable representation of a point coordinate in the [GoogleMap]'s view.
   const ScreenCoordinate({
-    @required this.x,
-    @required this.y,
+    required this.x,
+    required this.y,
   });
 
   /// Represents the number of pixels from the left of the [GoogleMap].
-  final int x;
+  final int? x;
 
   /// Represents the number of pixels from the top of the [GoogleMap].
-  final int y;
+  final int? y;
 
   dynamic _toJson() {
-    return <String, int>{
+    return <String, int?>{
       "x": x,
       "y": y,
     };
@@ -39,5 +39,5 @@ class ScreenCoordinate {
   }
 
   @override
-  int get hashCode => hashValues(x, y);
+  int get hashCode => Object.hash(x, y);
 }

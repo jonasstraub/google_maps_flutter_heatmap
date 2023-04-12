@@ -9,11 +9,7 @@ part of google_maps_flutter_heatmap;
 /// Used in [GoogleMapController] when the map is updated.
 class _PolylineUpdates {
   /// Computes [_PolylineUpdates] given previous and current [Polyline]s.
-  _PolylineUpdates.from(Set<Polyline> previous, Set<Polyline> current) {
-    if (previous == null) {
-      previous = Set<Polyline>.identity();
-    }
-
+  _PolylineUpdates.from(Set<Polyline> previous, Set<Polyline>? current) {
     if (current == null) {
       current = Set<Polyline>.identity();
     }
@@ -26,26 +22,26 @@ class _PolylineUpdates {
     final Set<PolylineId> prevPolylineIds = previousPolylines.keys.toSet();
     final Set<PolylineId> currentPolylineIds = currentPolylines.keys.toSet();
 
-    Polyline idToCurrentPolyline(PolylineId id) {
+    Polyline? idToCurrentPolyline(PolylineId id) {
       return currentPolylines[id];
     }
 
     final Set<PolylineId> _polylineIdsToRemove =
         prevPolylineIds.difference(currentPolylineIds);
 
-    final Set<Polyline> _polylinesToAdd = currentPolylineIds
+    final Set<Polyline?> _polylinesToAdd = currentPolylineIds
         .difference(prevPolylineIds)
         .map(idToCurrentPolyline)
         .toSet();
 
     /// Returns `true` if [current] is not equals to previous one with the
     /// same id.
-    bool hasChanged(Polyline current) {
-      final Polyline previous = previousPolylines[current.polylineId];
+    bool hasChanged(Polyline? current) {
+      final Polyline? previous = previousPolylines[current!.polylineId];
       return current != previous;
     }
 
-    final Set<Polyline> _polylinesToChange = currentPolylineIds
+    final Set<Polyline?> _polylinesToChange = currentPolylineIds
         .intersection(prevPolylineIds)
         .map(idToCurrentPolyline)
         .where(hasChanged)
@@ -56,9 +52,9 @@ class _PolylineUpdates {
     polylinesToChange = _polylinesToChange;
   }
 
-  Set<Polyline> polylinesToAdd;
-  Set<PolylineId> polylineIdsToRemove;
-  Set<Polyline> polylinesToChange;
+  Set<Polyline?>? polylinesToAdd;
+  Set<PolylineId>? polylineIdsToRemove;
+  Set<Polyline?>? polylinesToChange;
 
   Map<String, dynamic> _toMap() {
     final Map<String, dynamic> updateMap = <String, dynamic>{};
@@ -72,7 +68,7 @@ class _PolylineUpdates {
     addIfNonNull('polylinesToAdd', _serializePolylineSet(polylinesToAdd));
     addIfNonNull('polylinesToChange', _serializePolylineSet(polylinesToChange));
     addIfNonNull('polylineIdsToRemove',
-        polylineIdsToRemove.map<dynamic>((PolylineId m) => m.value).toList());
+        polylineIdsToRemove!.map<dynamic>((PolylineId m) => m.value).toList());
 
     return updateMap;
   }
@@ -81,7 +77,7 @@ class _PolylineUpdates {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
-    final _PolylineUpdates typedOther = other;
+    final _PolylineUpdates typedOther = other as _PolylineUpdates;
     return setEquals(polylinesToAdd, typedOther.polylinesToAdd) &&
         setEquals(polylineIdsToRemove, typedOther.polylineIdsToRemove) &&
         setEquals(polylinesToChange, typedOther.polylinesToChange);
@@ -89,7 +85,7 @@ class _PolylineUpdates {
 
   @override
   int get hashCode =>
-      hashValues(polylinesToAdd, polylineIdsToRemove, polylinesToChange);
+      Object.hash(polylinesToAdd, polylineIdsToRemove, polylinesToChange);
 
   @override
   String toString() {

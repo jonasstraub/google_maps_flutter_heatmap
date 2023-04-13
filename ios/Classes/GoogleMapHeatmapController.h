@@ -3,8 +3,7 @@
 // found in the LICENSE file.
 
 #import <Flutter/Flutter.h>
-#import <Google-Maps-iOS-Utils/GMUHeatmapTileLayer.h>
-#import <GoogleMaps/GoogleMaps.h>
+
 
 // Defines heatmap UI options writable from Flutter.
 @protocol FLTGoogleMapHeatmapOptionsSink

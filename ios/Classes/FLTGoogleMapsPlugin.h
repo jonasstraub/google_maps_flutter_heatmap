@@ -3,13 +3,7 @@
 // found in the LICENSE file.
 
 #import <Flutter/Flutter.h>
-#import <GoogleMaps/GoogleMaps.h>
-#import "GoogleMapCircleController.h"
-#import "GoogleMapController.h"
-#import "GoogleMapHeatmapController.h"
-#import "GoogleMapMarkerController.h"
-#import "GoogleMapPolygonController.h"
-#import "GoogleMapPolylineController.h"
+
 
 @interface FLTGoogleMapsPlugin : NSObject <FlutterPlugin>
 @end

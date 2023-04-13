@@ -4,6 +4,7 @@
 
 #import "GoogleMapCircleController.h"
 #import "JsonConversions.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation FLTGoogleMapCircleController {
   GMSCircle* _circle;

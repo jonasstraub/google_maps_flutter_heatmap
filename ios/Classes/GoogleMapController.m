@@ -4,6 +4,12 @@
 
 #import "GoogleMapController.h"
 #import "JsonConversions.h"
+#import <GoogleMaps/GoogleMaps.h>
+#import "GoogleMapCircleController.h"
+#import "GoogleMapHeatmapController.h"
+#import "GoogleMapMarkerController.h"
+#import "GoogleMapPolygonController.h"
+#import "GoogleMapPolylineController.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 

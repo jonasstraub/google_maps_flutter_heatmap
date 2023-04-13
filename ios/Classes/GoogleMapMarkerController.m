@@ -4,6 +4,8 @@
 
 #import "GoogleMapMarkerController.h"
 #import "JsonConversions.h"
+#import <GoogleMaps/GoogleMaps.h>
+#import "GoogleMapController.h"
 
 static UIImage* ExtractIcon(NSObject<FlutterPluginRegistrar>* registrar, NSArray* icon);
 static void InterpretInfoWindow(id<FLTGoogleMapMarkerOptionsSink> sink, NSDictionary* data);

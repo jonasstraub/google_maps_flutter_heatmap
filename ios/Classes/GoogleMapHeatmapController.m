@@ -4,8 +4,7 @@
 
 #import "GoogleMapHeatmapController.h"
 #import "JsonConversions.h"
-#import <Google-Maps-iOS-Utils/GMUHeatmapTileLayer.h>
-#import <GoogleMaps/GoogleMaps.h>
+
 
 @implementation FLTGoogleMapHeatmapController {
   GMUHeatmapTileLayer* _heatmapLayer;

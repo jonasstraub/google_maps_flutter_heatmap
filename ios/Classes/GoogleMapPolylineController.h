@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import <Flutter/Flutter.h>
-
+#import <GoogleMaps/GoogleMaps.h>
 
 // Defines polyline UI options writable from Flutter.
 @protocol FLTGoogleMapPolylineOptionsSink

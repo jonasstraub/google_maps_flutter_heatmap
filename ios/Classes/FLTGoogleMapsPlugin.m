@@ -3,13 +3,7 @@
 // found in the LICENSE file.
 
 #import "FLTGoogleMapsPlugin.h"
-#import <GoogleMaps/GoogleMaps.h>
-#import "GoogleMapCircleController.h"
-#import "GoogleMapController.h"
-#import "GoogleMapHeatmapController.h"
-#import "GoogleMapMarkerController.h"
-#import "GoogleMapPolygonController.h"
-#import "GoogleMapPolylineController.h"
+
 
 #pragma mark - GoogleMaps plugin implementation
 
